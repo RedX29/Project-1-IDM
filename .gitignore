@@ -1,0 +1,13 @@
+# Windows
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.log
+*.bak
+
+# User-specific files
+*.user
+*.userosscache
+*.sln.docstates
