@@ -1,68 +1,98 @@
-# IDM Activator
+<p align="center">
+  <img src="https://img.shields.io/badge/version-1.0-blue?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/IDM-6.43.10.2-green?style=for-the-badge" alt="IDM Compatible">
+  <img src="https://img.shields.io/badge/license-MIT-orange?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/github/stars/RedX29/Project-1-IDM?style=for-the-badge" alt="Stars">
+</p>
 
-![Version](https://img.shields.io/badge/version-1.0-blue)
-![IDM Compatible](https://img.shields.io/badge/IDM-6.43.10.2-green)
-![License](https://img.shields.io/badge/license-MIT-orange)
+<h1 align="center">🚀 IDM Activator</h1>
 
-> **A lightweight, self-updating tool to activate Internet Download Manager (IDM), freeze the trial, or reset activation.**  
-> **Safe, fast, and fully open-source.**
+<p align="center">
+  <strong>A lightweight, self-updating tool to activate Internet Download Manager (IDM), freeze the trial, or reset activation.</strong><br>
+  <strong>Safe, fast, and fully open-source.</strong>
+</p>
 
----
-
-## 📋 Table of Contents
-
-- [Features](#features)
-- [Repository Structure](#repository-structure)
-- [Download & Installation](#download--installation)
-- [How to Use](#how-to-use)
-- [How It Works](#how-it-works)
-- [Auto-Update System](#auto-update-system)
-- [Safety & Security](#safety--security)
-- [Troubleshooting](#troubleshooting)
-- [Tested Versions](#tested-versions)
-- [Contributing](#contributing)
-- [License](#license)
-- [Disclaimer](#disclaimer)
-- [Contact](#contact)
-- [Star the Repository!](#star-the-repository)
+<p align="center">
+  <a href="#-features">Features</a> •
+  <a href="#-quick-start">Quick Start</a> •
+  <a href="#-how-to-use">How to Use</a> •
+  <a href="#-auto-update-system">Auto-Update</a> •
+  <a href="#-troubleshooting">Troubleshooting</a> •
+  <a href="#-contact">Contact</a>
+</p>
 
 ---
 
-## Features
+## 📋 Features
 
-| Feature | Description |
-|---------|-------------|
-| ✅ **Activate IDM** | Generates a **fake registration** and **locks the registry** to keep IDM activated. |
-| ⏸️ **Freeze Trial** | **Prevents the 30-day trial from expiring** (no fake serial, just trial freeze). |
-| 🔄 **Reset Trial** | **Unlocks and removes all registry keys** – IDM reverts to fresh trial mode. |
-| 🔍 **Update Checker** | Compares your IDM version with the **latest tested version** and **auto-updates the script**. |
-| 🛡️ **Safety First** | **Always asks for `YES` confirmation** before making any registry changes. |
-| 💾 **Auto Backup** | **Automatically backs up your registry** before any modification. |
-| 🌐 **Offline Friendly** | The **core activator works offline** – only the update checker needs internet. |
+<table>
+  <tr>
+    <td><strong>✅ Activate IDM</strong></td>
+    <td>Generates a <strong>fake registration</strong> and <strong>locks the registry</strong> to keep IDM activated.</td>
+  </tr>
+  <tr>
+    <td><strong>⏸️ Freeze Trial</strong></td>
+    <td><strong>Prevents the 30-day trial from expiring</strong> (no fake serial, just trial freeze).</td>
+  </tr>
+  <tr>
+    <td><strong>🔄 Reset Trial</strong></td>
+    <td><strong>Unlocks and removes all registry keys</strong> – IDM reverts to fresh trial mode.</td>
+  </tr>
+  <tr>
+    <td><strong>🔍 Update Checker</strong></td>
+    <td>Compares your IDM version with the <strong>latest tested version</strong> and <strong>auto-updates the script</strong>.</td>
+  </tr>
+  <tr>
+    <td><strong>🛡️ Safety First</strong></td>
+    <td><strong>Always asks for `YES` confirmation</strong> before making any registry changes.</td>
+  </tr>
+  <tr>
+    <td><strong>💾 Auto Backup</strong></td>
+    <td><strong>Automatically backs up your registry</strong> before any modification.</td>
+  </tr>
+  <tr>
+    <td><strong>🌐 Offline Friendly</strong></td>
+    <td>The <strong>core activator works offline</strong> – only the update checker needs internet.</td>
+  </tr>
+</table>
 
 ---
 
-## Repository Structure
+## 🚀 Quick Start
+
+**One‑click activation – just run the batch file as Administrator.**
+
+```bash
+# 1. Download the latest release
+# 2. Right‑click IDM-Activator.bat → Run as administrator
+# 3. Press 1, type YES, and you're done!
+```
+
+> **⚠️ Important:** Always run the script as **Administrator** – it needs permission to modify the registry.
+
+---
+
+## 📁 Repository Structure
 
 ```
 Project-1-IDM/
-├── IDM-Activator.bat         # Main batch file (activator)
-├── Update-Check.ps1          # PowerShell update checker
-├── version.txt               # Latest tested IDM version
-├── script_version.txt        # Latest script version (for auto-update)
-└── README.md                 # This file
+├── 📄 IDM-Activator.bat         # Main batch file (activator)
+├── 📄 Update-Check.ps1          # PowerShell update checker
+├── 📄 version.txt               # Latest tested IDM version
+├── 📄 script_version.txt        # Latest script version (for auto-update)
+└── 📄 README.md                 # This file
 ```
 
 ---
 
-## Download & Installation
+## 💾 Download & Installation
 
 ### Option 1 – Download from GitHub (Recommended)
 
 1. Go to the [**Releases**](https://github.com/RedX29/Project-1-IDM/releases) page.
 2. Download the latest `IDM-Activator.zip`.
 3. Extract the files to a folder (e.g., `C:\IDM-Activator` or your Desktop).
-4. **Right-click `IDM-Activator.bat`** → **Run as administrator**.
+4. **Right‑click `IDM-Activator.bat`** → **Run as administrator**.
 
 ### Option 2 – Clone the Repository
 
@@ -75,9 +105,11 @@ Then run `IDM-Activator.bat` as administrator.
 
 ---
 
-## How to Use
+## 🖥️ How to Use
 
 ### Main Menu
+
+When you run the script, you'll see this menu:
 
 ```
 ==================================================
@@ -96,37 +128,39 @@ Then run `IDM-Activator.bat` as administrator.
 Enter option:
 ```
 
+### Options Explained
+
 | Option | Action |
 |--------|--------|
 | **`1`** | **Activate IDM** – Generates a fake serial and locks the registry. |
-| **`2`** | **Freeze Trial** – Stops the 30-day trial from counting down (no fake serial). |
+| **`2`** | **Freeze Trial** – Stops the 30‑day trial from counting down (no fake serial). |
 | **`3`** | **Reset Trial** – Removes all registry keys – IDM becomes unactivated again. |
 | **`4`** | Opens the official IDM download page in your browser. |
-| **`5`** | Runs the **update checker** (see below). |
+| **`5`** | Runs the update checker (see below). |
 | **`0`** | Exits the program. |
 
 ---
 
-### Update Checker (Option `5`)
+### 🔍 Update Checker (Option `5`)
 
-The update checker does three things:
+When you select option `5`, the update checker will:
 
-1. **Compares your IDM version** against the latest tested version (stored in `version.txt` on GitHub).
-2. **Checks for a newer script version** (compares your `SCRIPT_VERSION` with `script_version.txt`).
-3. **Offers to download and update** the batch file if a newer version exists.
+1. **Compare your IDM version** against the latest tested version (stored in `version.txt` on GitHub).
+2. **Check for a newer script version** (compares your `SCRIPT_VERSION` with `script_version.txt`).
+3. **Offer to download and update** the batch file if a newer version exists.
 
-If `Update-Check.ps1` is missing, the batch will **offer to download it automatically** from GitHub.
+If `Update-Check.ps1` is missing, the batch will **automatically offer to download it** from GitHub.
 
 ---
 
-## How It Works
+## 🔧 How It Works
 
 ### Activation Logic
 
 1. **Registry Backup** – Exports `HKCU\Software\Classes\CLSID` to `%TEMP%`.
 2. **Cleanup** – Removes old registration data.
 3. **Add Flag** – Creates `AdvIntDriverEnabled2 = 1` in `HKLM\SOFTWARE\Internet Download Manager`.
-4. **Fake Serial** – Generates random **FName**, **LName**, **Email**, and a 25-character serial.
+4. **Fake Serial** – Generates random **FName**, **LName**, **Email**, and a 25‑character serial.
 5. **Trigger IDM** – Downloads small images from IDM's website to create the CLSID keys.
 6. **Lock Keys** – Uses `icacls` to **deny Everyone** access to those keys.
 
@@ -142,7 +176,7 @@ Same as activation, but **without** the fake serial – this keeps the trial act
 
 ---
 
-## Auto-Update System
+## 🔄 Auto-Update System
 
 The tool is **self-updating** – when you run `[5] Check for Updates`:
 
@@ -154,7 +188,7 @@ The tool is **self-updating** – when you run `[5] Check for Updates`:
 
 ---
 
-## Safety & Security
+## 🛡️ Safety & Security
 
 - ✅ **Always asks for confirmation** – you must type `YES` before any registry changes.
 - ✅ **Auto-backup** – your registry keys are backed up before any modification.
@@ -163,7 +197,7 @@ The tool is **self-updating** – when you run `[5] Check for Updates`:
 
 ---
 
-## Troubleshooting
+## ❓ Troubleshooting
 
 ### "Update-Check.ps1 is missing"
 
@@ -180,7 +214,7 @@ The tool is **self-updating** – when you run `[5] Check for Updates`:
 ### "Access denied" errors
 
 - Make sure you're running the script as **Administrator**.
-- Right-click `IDM-Activator.bat` → **Run as administrator**.
+- Right‑click `IDM-Activator.bat` → **Run as administrator**.
 
 ### "Windows protected your PC" (SmartScreen warning)
 
@@ -189,7 +223,7 @@ The tool is **self-updating** – when you run `[5] Check for Updates`:
 
 ### The batch file closes immediately
 
-- The script auto-elevates to admin, but if it flashes and closes:
+- The script auto‑elevates to admin, but if it flashes and closes:
   1. Open **Command Prompt as Administrator**.
   2. Navigate to the folder with the batch file:
      ```cmd
@@ -203,7 +237,7 @@ The tool is **self-updating** – when you run `[5] Check for Updates`:
 
 ---
 
-## Tested Versions
+## 🧪 Tested Versions
 
 | IDM Version | Status |
 |-------------|--------|
@@ -212,7 +246,7 @@ The tool is **self-updating** – when you run `[5] Check for Updates`:
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
 1. **Fork** the repository.
 2. Create a **feature branch** (`git checkout -b feature/amazing-feature`).
@@ -222,13 +256,13 @@ The tool is **self-updating** – when you run `[5] Check for Updates`:
 
 ---
 
-## License
+## 📜 License
 
 This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## Disclaimer
+## ⚠️ Disclaimer
 
 This tool is provided **for educational purposes only**.  
 The authors are not responsible for any misuse, damages, or issues that arise from using this software.  
@@ -236,7 +270,7 @@ You are responsible for complying with IDM's terms of service.
 
 ---
 
-## Contact
+## 📬 Contact
 
 - **Discord**: `onlyvyrex`
 - **Issues**: [https://github.com/RedX29/Project-1-IDM/issues](https://github.com/RedX29/Project-1-IDM/issues)
@@ -244,7 +278,7 @@ You are responsible for complying with IDM's terms of service.
 
 ---
 
-## Star the Repository!
+## ⭐ Star the Repository!
 
 If you find this tool useful, please consider starring the repository on GitHub – it helps others discover it too!
 
