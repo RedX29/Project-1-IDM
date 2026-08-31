@@ -253,15 +253,3 @@ If you find this tool useful, please consider starring the repository on GitHub 
 ---
 
 **Enjoy your fully activated IDM!** 🚀
-```
-
----
-
-## What to do
-
-1. **Copy everything above** (from `# IDM Activator` to the final `🚀`).
-2. Go to your repo → **`README.md`** → click the **pencil icon** to edit.
-3. **Delete everything** in the file and **paste** the new content.
-4. Click **Commit changes**.
-
----
