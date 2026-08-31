@@ -16,7 +16,7 @@ param(
 
 #region CONFIGURATION
 # 🔗 URL to your version.json (must be raw text)
-$RemoteMetaUrl = "https://gist.githubusercontent.com/raw/your-gist-id/version.json"
+$RemoteMetaUrl = "https://raw.githubusercontent.com/RedX29/Project-1-IDM/main/version.json"
 
 # 🛡️ Local fallback (used if remote is unreachable)
 $ScriptTestedUpToVersion = "6.42.33"
