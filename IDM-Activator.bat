@@ -43,7 +43,7 @@ set "IDM_VER=%IDM_VER: =%"
 set "IDM_VER=%IDM_VER:,=.%"
 
 :: ------------------------------------------------------------
-::  STATUS (plain text, no emojis)
+::  STATUS (plain text)
 :: ------------------------------------------------------------
 set "STATUS=Working"
 
@@ -84,7 +84,7 @@ pause >nul
 goto menu
 
 :: ------------------------------------------------------------
-::  UPDATE CHECK – with file existence check + download
+::  UPDATE CHECK
 :: ------------------------------------------------------------
 :update_check
 cls
@@ -93,35 +93,21 @@ echo        Running Update Checker...
 echo ==================================================
 set "PS_FILE=%~dp0Update-Check.ps1"
 if not exist "%PS_FILE%" (
-    echo Update-Check.ps1 is missing.
-    echo This file is needed to check for updates.
-    echo Do you want to download it from GitHub? (y/N)
-    set /p DOWNLOAD="> "
-    if /i "!DOWNLOAD!"=="y" (
-        echo Downloading Update-Check.ps1 from GitHub...
-        bitsadmin /transfer "GetUpdateChecker" /download /priority normal "https://raw.githubusercontent.com/RedX29/Project-1-IDM/main/Update-Check.ps1" "%PS_FILE%" >nul 2>&1
-        if exist "%PS_FILE%" (
-            echo Download successful.
-        ) else (
-            echo Download failed. Please download manually from:
-            echo https://raw.githubusercontent.com/RedX29/Project-1-IDM/main/Update-Check.ps1
-            echo Place it in the same folder as this batch file.
-            pause
-            goto menu
-        )
-    ) else (
-        echo Update checker skipped. Returning to menu.
-        pause
-        goto menu
-    )
+    echo Update-Check.ps1 is missing. Please download it from GitHub.
+    pause
+    goto menu
 )
 echo Press any key to run the update checker...
 pause >nul
 powershell -ExecutionPolicy Bypass -File "%PS_FILE%"
+if %errorlevel% equ 1 (
+    echo Exiting IDM Activator...
+    exit
+)
 goto menu
 
 :: ------------------------------------------------------------
-::  ACTIONS (stable)
+::  ACTIVATE
 :: ------------------------------------------------------------
 :activate
 call :confirm "Activate IDM"
@@ -136,6 +122,9 @@ echo Activation complete!
 pause
 goto menu
 
+:: ------------------------------------------------------------
+::  FREEZE
+:: ------------------------------------------------------------
 :freeze
 call :confirm "Freeze Trial"
 if errorlevel 1 goto menu
@@ -148,6 +137,9 @@ echo Trial frozen!
 pause
 goto menu
 
+:: ------------------------------------------------------------
+::  RESET
+:: ------------------------------------------------------------
 :reset
 call :confirm "Reset Trial"
 if errorlevel 1 goto menu
