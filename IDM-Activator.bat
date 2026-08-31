@@ -4,16 +4,9 @@ title IDM Activator
 color 0A
 
 :: ------------------------------------------------------------
-::  SCRIPT VERSION (must match the version in script_version.txt on GitHub)
+::  SCRIPT VERSION
 :: ------------------------------------------------------------
 set "SCRIPT_VERSION=1.0"
-
-:: ------------------------------------------------------------
-::  GITHUB RAW URLS (update if you rename your repo or file)
-:: ------------------------------------------------------------
-set "SCRIPT_URL=https://raw.githubusercontent.com/RedX29/Project-1-IDM/main/IDM-Activator.bat"
-set "VERSION_URL=https://raw.githubusercontent.com/RedX29/Project-1-IDM/main/version.txt"
-set "SCRIPT_VER_URL=https://raw.githubusercontent.com/RedX29/Project-1-IDM/main/script_version.txt"
 
 :: ------------------------------------------------------------
 ::  ADMIN CHECK
@@ -26,81 +19,33 @@ if %errorlevel% neq 0 (
 )
 
 :: ------------------------------------------------------------
-::  FIND IDM & GET VERSION
+::  FIND IDM
 :: ------------------------------------------------------------
 set "IDM_PATH="
 if exist "%ProgramFiles(x86)%\Internet Download Manager\IDMan.exe" set "IDM_PATH=%ProgramFiles(x86)%\Internet Download Manager\IDMan.exe"
 if exist "%ProgramFiles%\Internet Download Manager\IDMan.exe" set "IDM_PATH=%ProgramFiles%\Internet Download Manager\IDMan.exe"
 if not defined IDM_PATH (
-    echo IDM is not installed. Please download from:
-    echo https://www.internetdownloadmanager.com/download.html
+    echo IDM is not installed.
+    echo Please download from: https://www.internetdownloadmanager.com/download.html
     pause
     exit
 )
 
+:: ------------------------------------------------------------
+::  GET IDM VERSION
+:: ------------------------------------------------------------
+set "IDM_VER="
 for /f "tokens=2 delims==" %%i in ('wmic datafile where name^="%IDM_PATH:\=\\%" get version /value ^| find "="') do set "IDM_VER=%%i"
+if not defined IDM_VER (
+    for /f "delims=" %%i in ('powershell -Command "(Get-Item '%IDM_PATH%').VersionInfo.FileVersion"') do set "IDM_VER=%%i"
+)
 set "IDM_VER=%IDM_VER: =%"
-echo Installed IDM version: %IDM_VER%
+set "IDM_VER=%IDM_VER:,=.%"
 
 :: ------------------------------------------------------------
-::  REMOTE CHECKS (using PowerShell for network)
+::  STATUS (plain text, no emojis)
 :: ------------------------------------------------------------
-set "STATUS=Checking..."
-set "TESTED_VER="
-set "REMOTE_SCRIPT_VER="
-
-:: Download version.txt
-for /f "delims=" %%a in ('powershell -Command "try { (Invoke-WebRequest -Uri '%VERSION_URL%' -UseBasicParsing).Content.Trim() } catch { '' }"') do set "TESTED_VER=%%a"
-
-:: Download script_version.txt
-for /f "delims=" %%b in ('powershell -Command "try { (Invoke-WebRequest -Uri '%SCRIPT_VER_URL%' -UseBasicParsing).Content.Trim() } catch { '' }"') do set "REMOTE_SCRIPT_VER=%%b"
-
-:: ------------------------------------------------------------
-::  COMPARE IDM VERSIONS
-:: ------------------------------------------------------------
-if defined TESTED_VER (
-    for /f "tokens=1-3 delims=." %%a in ("%IDM_VER%") do set "I_A=%%a" & set "I_B=%%b" & set "I_C=%%c"
-    for /f "tokens=1-3 delims=." %%a in ("%TESTED_VER%") do set "T_A=%%a" & set "T_B=%%b" & set "T_C=%%c"
-
-    set "IS_NEWER=0"
-    if !I_A! gtr !T_A! set "IS_NEWER=1"
-    if !I_A! equ !T_A! if !I_B! gtr !T_B! set "IS_NEWER=1"
-    if !I_A! equ !T_A! if !I_B! equ !T_B! if !I_C! gtr !T_C! set "IS_NEWER=1"
-
-    if !IS_NEWER! equ 1 (
-        set "STATUS=⚠️ Untested"
-    ) else (
-        set "STATUS=✅ Working"
-    )
-) else (
-    set "STATUS=Offline (no check)"
-)
-
-:: ------------------------------------------------------------
-::  SCRIPT AUTO-UPDATE
-:: ------------------------------------------------------------
-if defined REMOTE_SCRIPT_VER (
-    if not "%REMOTE_SCRIPT_VER%"=="%SCRIPT_VERSION%" (
-        echo ==================================================
-        echo   New script version %REMOTE_SCRIPT_VER% available!
-        echo   Your version: %SCRIPT_VERSION%
-        echo ==================================================
-        set /p UPDATE=Download and update now? (y/N): 
-        if /i "!UPDATE!"=="y" (
-            echo Downloading new version...
-            powershell -Command "Invoke-WebRequest -Uri '%SCRIPT_URL%' -OutFile '%TEMP%\IDM-Activator_new.bat'"
-            if exist "%TEMP%\IDM-Activator_new.bat" (
-                copy /y "%TEMP%\IDM-Activator_new.bat" "%~f0" >nul
-                echo Update successful! Restarting...
-                start "" "%~f0"
-                exit
-            ) else (
-                echo Failed to download update.
-                pause
-            )
-        )
-    )
-)
+set "STATUS=Working"
 
 :: ------------------------------------------------------------
 ::  REGISTRY PATHS
@@ -109,7 +54,7 @@ set "HKLM_KEY=HKLM\SOFTWARE\Internet Download Manager"
 if not "%PROCESSOR_ARCHITECTURE%"=="x86" set "HKLM_KEY=HKLM\SOFTWARE\WOW6432Node\Internet Download Manager"
 
 :: ------------------------------------------------------------
-::  MENU
+::  MENU LOOP
 :: ------------------------------------------------------------
 :menu
 cls
@@ -123,30 +68,46 @@ echo   [1] Activate IDM
 echo   [2] Freeze Trial (30-day freeze)
 echo   [3] Reset Activation / Trial
 echo   [4] Download IDM (Official)
+echo   [5] Check for Updates
 echo   [0] Exit
 echo ==================================================
-if "%STATUS%"=="⚠️ Untested" (
-    echo WARNING: Your IDM is newer than the tested version!
-    echo Proceed at your own risk.
-    echo ==================================================
-)
 set /p choice="Enter option: "
 
 if "%choice%"=="1" goto activate
 if "%choice%"=="2" goto freeze
 if "%choice%"=="3" goto reset
 if "%choice%"=="4" goto download
+if "%choice%"=="5" goto update_check
 if "%choice%"=="0" exit
 echo Invalid option.
 pause >nul
 goto menu
 
 :: ------------------------------------------------------------
-::  ACTIONS
+::  UPDATE CHECK – Calls separate PowerShell script
+:: ------------------------------------------------------------
+:update_check
+cls
+echo ==================================================
+echo        Running Update Checker...
+echo ==================================================
+echo If a PowerShell window opens, please allow it.
+echo The update checker will compare versions and auto-update if needed.
+echo ==================================================
+echo Press any key to continue...
+pause >nul
+powershell -ExecutionPolicy Bypass -File "%~dp0Update-Check.ps1"
+echo ==================================================
+echo Update check complete. Press any key to return to menu.
+pause >nul
+goto menu
+
+:: ------------------------------------------------------------
+::  ACTIONS (stable)
 :: ------------------------------------------------------------
 :activate
 call :confirm "Activate IDM"
-if %errorlevel% neq 0 goto menu
+if errorlevel 1 goto menu
 call :backup
 reg delete "HKCU\Software\DownloadManager" /f >nul 2>&1
 reg add "%HKLM_KEY%" /v AdvIntDriverEnabled2 /t REG_DWORD /d 1 /f >nul 2>&1
@@ -159,7 +120,7 @@ goto menu
 
 :freeze
 call :confirm "Freeze Trial"
-if %errorlevel% neq 0 goto menu
+if errorlevel 1 goto menu
 call :backup
 reg delete "HKCU\Software\DownloadManager" /f >nul 2>&1
 reg add "%HKLM_KEY%" /v AdvIntDriverEnabled2 /t REG_DWORD /d 1 /f >nul 2>&1
@@ -171,7 +132,7 @@ goto menu
 
 :reset
 call :confirm "Reset Trial"
-if %errorlevel% neq 0 goto menu
+if errorlevel 1 goto menu
 call :backup
 call :unlock_and_delete_keys
 echo Reset complete!
