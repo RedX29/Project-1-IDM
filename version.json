@@ -1,0 +1,7 @@
+{
+    "scriptVersion": "2.1",
+    "lastTestedIDM": "6.42.33",
+    "status": "Working",
+    "downloadUrl": "https://raw.githubusercontent.com/RedX29/Project-1-IDM/main/IDM-Activator.ps1",
+    "changelog": "Initial setup – script works with IDM up to 6.42.33"
+}
