@@ -1,7 +1,19 @@
 @echo off
 setlocal enabledelayedexpansion
-title IDM Activator - Pure Batch
+title IDM Activator
 color 0A
+
+:: ------------------------------------------------------------
+::  SCRIPT VERSION (must match the version in script_version.txt on GitHub)
+:: ------------------------------------------------------------
+set "SCRIPT_VERSION=1.0"
+
+:: ------------------------------------------------------------
+::  GITHUB RAW URLS (update if you rename your repo or file)
+:: ------------------------------------------------------------
+set "SCRIPT_URL=https://raw.githubusercontent.com/RedX29/Project-1-IDM/main/IDM-Activator.bat"
+set "VERSION_URL=https://raw.githubusercontent.com/RedX29/Project-1-IDM/main/version.txt"
+set "SCRIPT_VER_URL=https://raw.githubusercontent.com/RedX29/Project-1-IDM/main/script_version.txt"
 
 :: ------------------------------------------------------------
 ::  ADMIN CHECK
@@ -14,7 +26,7 @@ if %errorlevel% neq 0 (
 )
 
 :: ------------------------------------------------------------
-::  FIND IDM INSTALLATION
+::  FIND IDM & GET VERSION
 :: ------------------------------------------------------------
 set "IDM_PATH="
 if exist "%ProgramFiles(x86)%\Internet Download Manager\IDMan.exe" set "IDM_PATH=%ProgramFiles(x86)%\Internet Download Manager\IDMan.exe"
@@ -25,28 +37,87 @@ if not defined IDM_PATH (
     pause
     exit
 )
-echo IDM found at: %IDM_PATH%
 
-:: Get installed version (optional but nice)
 for /f "tokens=2 delims==" %%i in ('wmic datafile where name^="%IDM_PATH:\=\\%" get version /value ^| find "="') do set "IDM_VER=%%i"
+set "IDM_VER=%IDM_VER: =%"
 echo Installed IDM version: %IDM_VER%
 
 :: ------------------------------------------------------------
-::  DETERMINE ARCHITECTURE & REGISTRY PATHS
+::  REMOTE CHECKS (using PowerShell for network)
 :: ------------------------------------------------------------
-set "CLSID_KEY=HKCU\Software\Classes\CLSID"
+set "STATUS=Checking..."
+set "TESTED_VER="
+set "REMOTE_SCRIPT_VER="
+
+:: Download version.txt
+for /f "delims=" %%a in ('powershell -Command "try { (Invoke-WebRequest -Uri '%VERSION_URL%' -UseBasicParsing).Content.Trim() } catch { '' }"') do set "TESTED_VER=%%a"
+
+:: Download script_version.txt
+for /f "delims=" %%b in ('powershell -Command "try { (Invoke-WebRequest -Uri '%SCRIPT_VER_URL%' -UseBasicParsing).Content.Trim() } catch { '' }"') do set "REMOTE_SCRIPT_VER=%%b"
+
+:: ------------------------------------------------------------
+::  COMPARE IDM VERSIONS
+:: ------------------------------------------------------------
+if defined TESTED_VER (
+    for /f "tokens=1-3 delims=." %%a in ("%IDM_VER%") do set "I_A=%%a" & set "I_B=%%b" & set "I_C=%%c"
+    for /f "tokens=1-3 delims=." %%a in ("%TESTED_VER%") do set "T_A=%%a" & set "T_B=%%b" & set "T_C=%%c"
+
+    set "IS_NEWER=0"
+    if !I_A! gtr !T_A! set "IS_NEWER=1"
+    if !I_A! equ !T_A! if !I_B! gtr !T_B! set "IS_NEWER=1"
+    if !I_A! equ !T_A! if !I_B! equ !T_B! if !I_C! gtr !T_C! set "IS_NEWER=1"
+
+    if !IS_NEWER! equ 1 (
+        set "STATUS=⚠️ Untested"
+    ) else (
+        set "STATUS=✅ Working"
+    )
+) else (
+    set "STATUS=Offline (no check)"
+)
+
+:: ------------------------------------------------------------
+::  SCRIPT AUTO-UPDATE
+:: ------------------------------------------------------------
+if defined REMOTE_SCRIPT_VER (
+    if not "%REMOTE_SCRIPT_VER%"=="%SCRIPT_VERSION%" (
+        echo ==================================================
+        echo   New script version %REMOTE_SCRIPT_VER% available!
+        echo   Your version: %SCRIPT_VERSION%
+        echo ==================================================
+        set /p UPDATE=Download and update now? (y/N): 
+        if /i "!UPDATE!"=="y" (
+            echo Downloading new version...
+            powershell -Command "Invoke-WebRequest -Uri '%SCRIPT_URL%' -OutFile '%TEMP%\IDM-Activator_new.bat'"
+            if exist "%TEMP%\IDM-Activator_new.bat" (
+                copy /y "%TEMP%\IDM-Activator_new.bat" "%~f0" >nul
+                echo Update successful! Restarting...
+                start "" "%~f0"
+                exit
+            ) else (
+                echo Failed to download update.
+                pause
+            )
+        )
+    )
+)
+
+:: ------------------------------------------------------------
+::  REGISTRY PATHS
+:: ------------------------------------------------------------
 set "HKLM_KEY=HKLM\SOFTWARE\Internet Download Manager"
 if not "%PROCESSOR_ARCHITECTURE%"=="x86" set "HKLM_KEY=HKLM\SOFTWARE\WOW6432Node\Internet Download Manager"
 
 :: ------------------------------------------------------------
-::  MENU LOOP
+::  MENU
 :: ------------------------------------------------------------
 :menu
 cls
 echo ==================================================
-echo        IDM Activator - Pure Batch Version
+echo        IDM Activator v%SCRIPT_VERSION%
 echo ==================================================
-echo   IDM Version: %IDM_VER%
+echo   Installed IDM : %IDM_VER%
+echo   Status        : %STATUS%
 echo ==================================================
 echo   [1] Activate IDM
 echo   [2] Freeze Trial (30-day freeze)
@@ -54,6 +125,11 @@ echo   [3] Reset Activation / Trial
 echo   [4] Download IDM (Official)
 echo   [0] Exit
 echo ==================================================
+if "%STATUS%"=="⚠️ Untested" (
+    echo WARNING: Your IDM is newer than the tested version!
+    echo Proceed at your own risk.
+    echo ==================================================
+)
 set /p choice="Enter option: "
 
 if "%choice%"=="1" goto activate
@@ -61,35 +137,26 @@ if "%choice%"=="2" goto freeze
 if "%choice%"=="3" goto reset
 if "%choice%"=="4" goto download
 if "%choice%"=="0" exit
-echo Invalid option. Press any key to retry...
+echo Invalid option.
 pause >nul
 goto menu
 
 :: ------------------------------------------------------------
-::  ACTIVATE
+::  ACTIONS
 :: ------------------------------------------------------------
 :activate
 call :confirm "Activate IDM"
 if %errorlevel% neq 0 goto menu
-echo Creating backup...
 call :backup
-echo Cleaning old registration...
 reg delete "HKCU\Software\DownloadManager" /f >nul 2>&1
-echo Adding activation flag...
 reg add "%HKLM_KEY%" /v AdvIntDriverEnabled2 /t REG_DWORD /d 1 /f >nul 2>&1
-echo Generating fake registration...
 call :generate_serial
-echo Triggering IDM to create CLSID keys...
 call :trigger_idm
-echo Locking CLSID keys...
 call :lock_keys
 echo Activation complete!
 pause
 goto menu
 
-:: ------------------------------------------------------------
-::  FREEZE
-:: ------------------------------------------------------------
 :freeze
 call :confirm "Freeze Trial"
 if %errorlevel% neq 0 goto menu
@@ -102,28 +169,19 @@ echo Trial frozen!
 pause
 goto menu
 
-:: ------------------------------------------------------------
-::  RESET
-:: ------------------------------------------------------------
 :reset
 call :confirm "Reset Trial"
 if %errorlevel% neq 0 goto menu
 call :backup
 call :unlock_and_delete_keys
-echo Reset complete – IDM will revert to trial mode.
+echo Reset complete!
 pause
 goto menu
 
-:: ------------------------------------------------------------
-::  DOWNLOAD IDM
-:: ------------------------------------------------------------
 :download
 start https://www.internetdownloadmanager.com/download.html
 goto menu
 
-:: ------------------------------------------------------------
-::  CONFIRM FUNCTION (asks for YES)
-:: ------------------------------------------------------------
 :confirm
 set /p confirm=Type YES to proceed with %~1, or anything else to cancel: 
 if /i not "%confirm%"=="YES" (
@@ -132,9 +190,6 @@ if /i not "%confirm%"=="YES" (
 )
 exit /b 0
 
-:: ------------------------------------------------------------
-::  BACKUP (exports CLSID keys)
-:: ------------------------------------------------------------
 :backup
 set "timestamp=%date:~-4,4%%date:~-10,2%%date:~-7,2%_%time:~0,2%%time:~3,2%%time:~6,2%"
 set "timestamp=%timestamp: =0%"
@@ -142,9 +197,6 @@ reg export "HKCU\Software\Classes\CLSID" "%TEMP%\_Backup_CLSID_%timestamp%.reg" 
 echo Backup saved to %TEMP%\_Backup_CLSID_%timestamp%.reg
 exit /b
 
-:: ------------------------------------------------------------
-::  GENERATE FAKE SERIAL (batch random)
-:: ------------------------------------------------------------
 :generate_serial
 set /a fname=%random% %% 9000 + 1000
 set /a lname=%random% %% 9000 + 1000
@@ -160,12 +212,9 @@ reg add "HKCU\Software\DownloadManager" /v FName /t REG_SZ /d %fname% /f >nul 2>
 reg add "HKCU\Software\DownloadManager" /v LName /t REG_SZ /d %lname% /f >nul 2>&1
 reg add "HKCU\Software\DownloadManager" /v Email /t REG_SZ /d %email% /f >nul 2>&1
 reg add "HKCU\Software\DownloadManager" /v Serial /t REG_SZ /d %serial% /f >nul 2>&1
-echo   FName=%fname%, LName=%lname%, Email=%email%, Serial=%serial%
+echo   Serial: %serial%
 exit /b
 
-:: ------------------------------------------------------------
-::  TRIGGER IDM DOWNLOADS (to create CLSID keys)
-:: ------------------------------------------------------------
 :trigger_idm
 set "urls[0]=https://www.internetdownloadmanager.com/images/idm_box_min.png"
 set "urls[1]=https://www.internetdownloadmanager.com/register/IDMlib/images/idman_logos.png"
@@ -177,9 +226,6 @@ for /l %%i in (0,1,2) do (
 del "%TEMP%\temp_*.png" >nul 2>&1
 exit /b
 
-:: ------------------------------------------------------------
-::  LOCK CLSID KEYS (using icacls)
-:: ------------------------------------------------------------
 :lock_keys
 echo Scanning for IDM-related CLSID keys...
 for /f "delims=" %%a in ('reg query "HKCU\Software\Classes\CLSID" /k /f { /s 2^>nul ^| find "{"') do (
@@ -207,9 +253,6 @@ if defined match (
 )
 exit /b
 
-:: ------------------------------------------------------------
-::  UNLOCK AND DELETE KEYS (for reset)
-:: ------------------------------------------------------------
 :unlock_and_delete_keys
 echo Unlocking and deleting CLSID keys...
 for /f "delims=" %%a in ('reg query "HKCU\Software\Classes\CLSID" /k /f { /s 2^>nul ^| find "{"') do (
@@ -225,7 +268,3 @@ takeown /f "%key%" >nul 2>&1
 reg delete "%key%" /f >nul 2>&1
 echo Deleted: %key%
 exit /b
-
-:: ------------------------------------------------------------
-::  END
-:: ------------------------------------------------------------
