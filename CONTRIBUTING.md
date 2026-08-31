@@ -45,4 +45,3 @@ Thanks for your interest in contributing! 🎉
 
 - Discord: `onlyvyrex`
 - GitHub Issues: [https://github.com/RedX29/Project-1-IDM/issues](https://github.com/RedX29/Project-1-IDM/issues)
-```
