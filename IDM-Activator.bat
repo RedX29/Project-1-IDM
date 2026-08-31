@@ -84,22 +84,40 @@ pause >nul
 goto menu
 
 :: ------------------------------------------------------------
-::  UPDATE CHECK – Calls separate PowerShell script
+::  UPDATE CHECK – with file existence check + download
 :: ------------------------------------------------------------
 :update_check
 cls
 echo ==================================================
 echo        Running Update Checker...
 echo ==================================================
-echo If a PowerShell window opens, please allow it.
-echo The update checker will compare versions and auto-update if needed.
-echo ==================================================
-echo Press any key to continue...
+set "PS_FILE=%~dp0Update-Check.ps1"
+if not exist "%PS_FILE%" (
+    echo Update-Check.ps1 is missing.
+    echo This file is needed to check for updates.
+    echo Do you want to download it from GitHub? (y/N)
+    set /p DOWNLOAD="> "
+    if /i "!DOWNLOAD!"=="y" (
+        echo Downloading Update-Check.ps1 from GitHub...
+        bitsadmin /transfer "GetUpdateChecker" /download /priority normal "https://raw.githubusercontent.com/RedX29/Project-1-IDM/main/Update-Check.ps1" "%PS_FILE%" >nul 2>&1
+        if exist "%PS_FILE%" (
+            echo Download successful.
+        ) else (
+            echo Download failed. Please download manually from:
+            echo https://raw.githubusercontent.com/RedX29/Project-1-IDM/main/Update-Check.ps1
+            echo Place it in the same folder as this batch file.
+            pause
+            goto menu
+        )
+    ) else (
+        echo Update checker skipped. Returning to menu.
+        pause
+        goto menu
+    )
+)
+echo Press any key to run the update checker...
 pause >nul
-powershell -ExecutionPolicy Bypass -File "%~dp0Update-Check.ps1"
-echo ==================================================
-echo Update check complete. Press any key to return to menu.
-pause >nul
+powershell -ExecutionPolicy Bypass -File "%PS_FILE%"
 goto menu
 
 :: ------------------------------------------------------------
