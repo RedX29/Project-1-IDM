@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    IDM Activator with Real‑time Status & Prompted Self‑Update.
+    IDM Activator with Real-time Status & Prompted Self-Update.
 .DESCRIPTION
     Shows ✅ Working / ⚠️ Untested / ❌ Broken next to each action.
     Checks for script updates and prompts to download them.
@@ -456,11 +456,10 @@ if (-not $Action) {
         $btnFreeze.Text = "⏸️ Freeze Trial  [$($Global:ActionStatus.Freeze)]"
         $btnReset.Text = "🔄 Reset Trial  [$($Global:ActionStatus.Reset)]"
 
-        # Color code the status
         if ($Global:ActionStatus.Activate -match "✅") { $btnActivate.BackColor = [System.Drawing.Color]::FromArgb(200, 240, 200) }
         elseif ($Global:ActionStatus.Activate -match "⚠️") { $btnActivate.BackColor = [System.Drawing.Color]::FromArgb(255, 240, 180) }
         elseif ($Global:ActionStatus.Activate -match "❌") { $btnActivate.BackColor = [System.Drawing.Color]::FromArgb(255, 200, 200) }
-        # same for freeze
+        
         if ($Global:ActionStatus.Freeze -match "✅") { $btnFreeze.BackColor = [System.Drawing.Color]::FromArgb(200, 240, 200) }
         elseif ($Global:ActionStatus.Freeze -match "⚠️") { $btnFreeze.BackColor = [System.Drawing.Color]::FromArgb(255, 240, 180) }
         elseif ($Global:ActionStatus.Freeze -match "❌") { $btnFreeze.BackColor = [System.Drawing.Color]::FromArgb(255, 200, 200) }
