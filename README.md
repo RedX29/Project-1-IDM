@@ -1,9 +1,8 @@
-```markdown
-<p align="center">
-  <img src="https://img.shields.io/badge/version-1.0-blue" alt="Version">
-  <img src="https://img.shields.io/badge/IDM-6.43.10.2-green" alt="IDM Compatible">
-  <img src="https://img.shields.io/badge/license-MIT-orange" alt="License">
-</p>
+# IDM Activator
+
+![Version](https://img.shields.io/badge/version-1.0-blue)
+![IDM Compatible](https://img.shields.io/badge/IDM-6.43.10.2-green)
+![License](https://img.shields.io/badge/license-MIT-orange)
 
 > **A lightweight, self-updating tool to activate Internet Download Manager (IDM), freeze the trial, or reset activation.**  
 > **Safe, fast, and fully open-source.**
@@ -12,24 +11,24 @@
 
 ## 📋 Table of Contents
 
-- [Features](#-features)
-- [Repository Structure](#-repository-structure)
-- [Download & Installation](#-download--installation)
-- [How to Use](#-how-to-use)
-- [How It Works](#-how-it-works)
-- [Auto-Update System](#-auto-update-system)
-- [Safety & Security](#-safety--security)
-- [Troubleshooting](#-troubleshooting)
-- [Tested Versions](#-tested-versions)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Disclaimer](#-disclaimer)
-- [Contact](#-contact)
-- [Star the Repository!](#-star-the-repository)
+- [Features](#features)
+- [Repository Structure](#repository-structure)
+- [Download & Installation](#download--installation)
+- [How to Use](#how-to-use)
+- [How It Works](#how-it-works)
+- [Auto-Update System](#auto-update-system)
+- [Safety & Security](#safety--security)
+- [Troubleshooting](#troubleshooting)
+- [Tested Versions](#tested-versions)
+- [Contributing](#contributing)
+- [License](#license)
+- [Disclaimer](#disclaimer)
+- [Contact](#contact)
+- [Star the Repository!](#star-the-repository)
 
 ---
 
-## 📋 Features
+## Features
 
 | Feature | Description |
 |---------|-------------|
@@ -43,7 +42,7 @@
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 Project-1-IDM/
@@ -56,7 +55,7 @@ Project-1-IDM/
 
 ---
 
-## 🚀 Download & Installation
+## Download & Installation
 
 ### Option 1 – Download from GitHub (Recommended)
 
@@ -76,7 +75,7 @@ Then run `IDM-Activator.bat` as administrator.
 
 ---
 
-## 🖥️ How to Use
+## How to Use
 
 ### Main Menu
 
@@ -120,7 +119,7 @@ If `Update-Check.ps1` is missing, the batch will **offer to download it automati
 
 ---
 
-## 🔧 How It Works
+## How It Works
 
 ### Activation Logic
 
@@ -143,7 +142,7 @@ Same as activation, but **without** the fake serial – this keeps the trial act
 
 ---
 
-## 🔄 Auto-Update System
+## Auto-Update System
 
 The tool is **self-updating** – when you run `[5] Check for Updates`:
 
@@ -155,7 +154,7 @@ The tool is **self-updating** – when you run `[5] Check for Updates`:
 
 ---
 
-## 🛡️ Safety & Security
+## Safety & Security
 
 - ✅ **Always asks for confirmation** – you must type `YES` before any registry changes.
 - ✅ **Auto-backup** – your registry keys are backed up before any modification.
@@ -164,14 +163,14 @@ The tool is **self-updating** – when you run `[5] Check for Updates`:
 
 ---
 
-## ❓ Troubleshooting
+## Troubleshooting
 
 ### "Update-Check.ps1 is missing"
 
 - The batch will **offer to download it automatically** from GitHub.
-- If the download fails, you can manually download it from:
+- If the download fails, you can manually download it from:  
   `https://raw.githubusercontent.com/RedX29/Project-1-IDM/main/Update-Check.ps1`
-  Place it in the **same folder** as `IDM-Activator.bat`.
+- Place it in the **same folder** as `IDM-Activator.bat`.
 
 ### "IDM is not installed"
 
@@ -204,7 +203,7 @@ The tool is **self-updating** – when you run `[5] Check for Updates`:
 
 ---
 
-## 🧪 Tested Versions
+## Tested Versions
 
 | IDM Version | Status |
 |-------------|--------|
@@ -213,7 +212,7 @@ The tool is **self-updating** – when you run `[5] Check for Updates`:
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 1. **Fork** the repository.
 2. Create a **feature branch** (`git checkout -b feature/amazing-feature`).
@@ -223,13 +222,13 @@ The tool is **self-updating** – when you run `[5] Check for Updates`:
 
 ---
 
-## 📜 License
+## License
 
 This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## ⚠️ Disclaimer
+## Disclaimer
 
 This tool is provided **for educational purposes only**.  
 The authors are not responsible for any misuse, damages, or issues that arise from using this software.  
@@ -237,7 +236,7 @@ You are responsible for complying with IDM's terms of service.
 
 ---
 
-## 📬 Contact
+## Contact
 
 - **Discord**: `onlyvyrex`
 - **Issues**: [https://github.com/RedX29/Project-1-IDM/issues](https://github.com/RedX29/Project-1-IDM/issues)
@@ -245,7 +244,7 @@ You are responsible for complying with IDM's terms of service.
 
 ---
 
-## ⭐ Star the Repository!
+## Star the Repository!
 
 If you find this tool useful, please consider starring the repository on GitHub – it helps others discover it too!
 
@@ -255,3 +254,14 @@ If you find this tool useful, please consider starring the repository on GitHub 
 
 **Enjoy your fully activated IDM!** 🚀
 ```
+
+---
+
+## What to do
+
+1. **Copy everything above** (from `# IDM Activator` to the final `🚀`).
+2. Go to your repo → **`README.md`** → click the **pencil icon** to edit.
+3. **Delete everything** in the file and **paste** the new content.
+4. Click **Commit changes**.
+
+---
